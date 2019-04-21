@@ -1,0 +1,35 @@
+
+#Excludes All files init dot
+.*
+
+#Ecludes Eclipse files
+*.project
+*.classpath
+*.settings
+*.metadata
+*.plugins
+*.plugin
+
+#Ecludes IntelliJ files
+*.iml
+*.idea
+
+#Excludes java files
+*.class
+*.jar
+
+#Excludes log files
+*.log
+
+#Others
+*.tmp
+
+target
+bin
+Servers
+data
+
+#Excludes generate Maven files
+dependency-check-report.xml
+temp
+*.temp*

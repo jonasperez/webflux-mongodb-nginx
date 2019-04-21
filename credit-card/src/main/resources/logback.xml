@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration scan="true">
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- =========================================================================================================== -->
+    <!-- Appenders                                                                                                   -->
+    <!-- =========================================================================================================== -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} {%X{user}} %msg%n</Pattern>
+		</encoder>
+	</appender>
+	
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    	<file>log/credit-card.log</file>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">	
+			<fileNamePattern>log/credit-card_%i.log</fileNamePattern>
+          	<MinIndex>1</MinIndex>
+          	<MaxIndex>10</MaxIndex>
+        </rollingPolicy>
+
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+          <MaxFileSize>10MB</MaxFileSize>
+        </triggeringPolicy>
+
+        <append>false</append>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} {%X{user}} %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <queueSize>512</queueSize>
+        <appender-ref ref="FILE"/>
+    </appender>
+
+    <logger name="com.example.credit.card" level="DEBUG"/>
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="ch.qos.logback" level="WARN"/>
+    <logger name="org.apache.catalina.startup.DigesterFactory" level="OFF"/>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>
+    </contextListener>
+
+    <root level="WARN">
+		<appender-ref ref="ASYNC"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

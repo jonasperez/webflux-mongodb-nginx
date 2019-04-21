@@ -1,0 +1,39 @@
+version: '3'
+services:
+  nginx:
+   container_name: nginx
+   image: nginx:1.13
+   restart: always
+   ports:
+   - 80:80
+   - 443:443
+   volumes:
+   - ./nginx/conf.d:/etc/nginx/conf.d
+   depends_on:
+   - credit-card
+
+  mongodb:
+    container_name: mongo
+    image: mongo:4.0.9-xenial
+    environment:
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGODB_DATABASE=credit-card
+    volumes:
+      - ./data/db:/data/db
+    ports:
+        - 0.0.0.0:27017:27017
+    command: mongod --smallfiles --logpath=/dev/null
+
+  credit-card:
+    restart: always
+    build: ./credit-card
+    working_dir: /credit-card
+    volumes:
+      - ./credit-card:/credit-card
+      - ~/.m2:/root/.m2
+    expose:
+      - "8080"
+    command: mvn clean spring-boot:run -Dspring.profiles.active=docker
+    depends_on:
+      - mongodb

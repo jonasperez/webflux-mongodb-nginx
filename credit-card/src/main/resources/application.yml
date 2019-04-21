@@ -1,0 +1,18 @@
+spring:
+    profiles: 
+        active: local
+    application.name: credit-card
+
+basepackages: com.example.credit.card
+
+---
+spring:
+    profiles: local
+
+    data.mongodb.uri: mongodb://localhost:27017/credit-card
+    
+---
+spring:
+    profiles: docker
+
+    data.mongodb.uri: mongodb://mongodb:27017/credit-card    
